@@ -1,10 +1,10 @@
-# 1 "main.c"
+# 1 "Handler_EXTI.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 387 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "main.c" 2
+# 1 "Handler_EXTI.c" 2
 # 1 "./Define_G4.h" 1
 
 
@@ -259,49 +259,47 @@ typedef struct
   v_uint32_t SWIER2;
   v_uint32_t PR2;
 } EXTI_TypeDef;
-# 2 "main.c" 2
+# 2 "Handler_EXTI.c" 2
 
-
-
-
- v_uint32_t user_sw_pressed = 0;
- static v_int32_t count = 0;
- static v_int32_t increment = 0;
- static v_uint32_t flag_cycle = 0;
-
-int main(void)
+void Led_Output(int mode,int led)
 {
- System_Init_170Mhz();
- GPIO_Init();
- PWM_Init();
- NVIC_Init();
- for(;;)
+ switch (mode)
  {
-  if(user_sw_pressed == 1)
-  {
-   count = 0;
-   increment = 0;
-  }
-  if(user_sw_pressed == 0)
-  {
-   if(count >= 0)
-   {
-    if(count == 100){
-     increment = -1;
-     flag_cycle = 1;
-    }
-    else if(count == 0){
-     increment = 1;
-    }
-    count += increment;
-   }
-   ((TIM_TypeDef *) (0x40000000UL))->CCR1 = (v_uint32_t)count;
-   Delay(20);
-   if(flag_cycle == 1)
-   {
-    Delay(5000);
-    flag_cycle = 0;
-   }
-   }
-  }
+ case 0:
+  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] |= (1<<led);
+  break;
+
+ case 1:
+  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] &= ~(1u << led);
+  break;
+
+ case 2:
+  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] ^= (1u << led);
+  break;
  }
+}
+
+void Delay(int time_ms)
+{
+
+
+
+
+
+
+
+ int delay_count = (170 * time_ms) / 1000;
+
+ ((SysTick_Type *) (0xE000E010UL) )->LOAD |= 0xF423FUL;
+
+ ((SysTick_Type *) (0xE000E010UL) )->VAL = 0x0UL;
+
+ ((SysTick_Type *) (0xE000E010UL) )->CTRL |= 0x5UL;
+
+   for (int i = 0; i < delay_count; i++)
+ {
+  while (!(((SysTick_Type *) (0xE000E010UL) )->CTRL & (1 << 16)));
+   }
+
+   ((SysTick_Type *) (0xE000E010UL) )->CTRL = 0x0UL;
+}

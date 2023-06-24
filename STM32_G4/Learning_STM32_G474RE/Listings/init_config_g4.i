@@ -1,10 +1,10 @@
-# 1 "main.c"
+# 1 "Init_Config_G4.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 387 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "main.c" 2
+# 1 "Init_Config_G4.c" 2
 # 1 "./Define_G4.h" 1
 
 
@@ -259,49 +259,83 @@ typedef struct
   v_uint32_t SWIER2;
   v_uint32_t PR2;
 } EXTI_TypeDef;
-# 2 "main.c" 2
+# 2 "Init_Config_G4.c" 2
 
-
-
-
- v_uint32_t user_sw_pressed = 0;
- static v_int32_t count = 0;
- static v_int32_t increment = 0;
- static v_uint32_t flag_cycle = 0;
-
-int main(void)
+void System_Init_170Mhz(void)
 {
- System_Init_170Mhz();
- GPIO_Init();
- PWM_Init();
- NVIC_Init();
- for(;;)
- {
-  if(user_sw_pressed == 1)
-  {
-   count = 0;
-   increment = 0;
-  }
-  if(user_sw_pressed == 0)
-  {
-   if(count >= 0)
-   {
-    if(count == 100){
-     increment = -1;
-     flag_cycle = 1;
-    }
-    else if(count == 0){
-     increment = 1;
-    }
-    count += increment;
-   }
-   ((TIM_TypeDef *) (0x40000000UL))->CCR1 = (v_uint32_t)count;
-   Delay(20);
-   if(flag_cycle == 1)
-   {
-    Delay(5000);
-    flag_cycle = 0;
-   }
-   }
-  }
- }
+
+ ((((PWR_TypeDef *) (0x40007000UL))->CR5) &= ~((0x1UL << 8UL)));
+ (((((PWR_TypeDef *) (0x40007000UL))->CR1)) = ((((((((PWR_TypeDef *) (0x40007000UL))->CR1))) & (~((0x3UL << 9UL)))) | ((0x1UL << 9UL)))));
+
+ ((((RCC_TypeDef *) (0x40021000UL))->CR) |= ((0x1UL << 16UL)));
+ while(!((((RCC_TypeDef *) (0x40021000UL))->CR) & ((0x1UL << 17UL))));
+ ((((RCC_TypeDef *) (0x40021000UL))->APB1ENR1) |= ((0x1UL << 28UL)));
+
+ ((((RCC_TypeDef *) (0x40021000UL))->CR) &= ~((0x1UL << 24UL)));
+ ((((RCC_TypeDef *) (0x40021000UL))->PLLCFGR) &= ~(((0x1UL << 24UL) | (0x1UL << 20UL) | (0x1UL << 16UL))));
+ (((((RCC_TypeDef *) (0x40021000UL))->PLLCFGR)) = ((((((((RCC_TypeDef *) (0x40021000UL))->PLLCFGR))) & (~(((0x3UL) | (0xFUL << 4) | (0x7F << 8) | (0x3UL << 21) | (0x3U << 25) | (0x1FU << 27))))) | (((3) | (((6) - 1U) << 4) | ((85) << 8) | ((((2) >> 1U) - 1U) << 21) | ((((2) >> 1U) - 1U) << 25) | ((2) << 27))))));
+ ((((RCC_TypeDef *) (0x40021000UL))->PLLCFGR) |= ((0x1UL << 24UL)));
+ ((((RCC_TypeDef *) (0x40021000UL))->CR) |= ((0x1UL << 24UL)));
+ while (((((RCC_TypeDef *) (0x40021000UL))->CR) & ((0x1UL << 25UL))) == 0U);
+
+ (((((FLASH_TypeDef *) (0x40022000UL))->ACR)) = ((((((((FLASH_TypeDef *) (0x40022000UL))->ACR))) & (~((0xFUL)))) | ((0x4UL)))));
+
+
+ ((((RCC_TypeDef *) (0x40021000UL))->CFGR) &= ~((0x3FF0UL)));
+
+ ((((RCC_TypeDef *) (0x40021000UL))->CFGR) |= ((0x3UL)));
+ while(((((RCC_TypeDef *) (0x40021000UL))->CFGR) & ((0x3UL << 2UL))) == 0);
+}
+
+void GPIO_Init(void)
+{
+
+    ((((RCC_TypeDef *) (0x40021000UL))->AHB2ENR) |= ((0x1UL)));
+
+
+ (((((GPIO_TypeDef *) (0x48000000UL))->MODE[0])) = ((((((((GPIO_TypeDef *) (0x48000000UL))->MODE[0]))) & (~((0x3UL << 10UL)))) | ((0x2UL << 10UL)))));
+ ((((GPIO_TypeDef *) (0x48000000UL))->MODE[8]) |= (((0x1UL << 20UL))));
+ ((((GPIO_TypeDef *) (0x48000000UL))->MODE[2]) |= (((0x2UL << 10UL))));
+
+
+ (((((GPIO_TypeDef *) (0x48000000UL))->MODE[0])) = ((((((((GPIO_TypeDef *) (0x48000000UL))->MODE[0]))) & (~((0x3UL << 2UL)))) | ((0x8UL)))));
+ ((((GPIO_TypeDef *) (0x48000000UL))->MODE[8]) |= (((0x10UL))));
+ ((((GPIO_TypeDef *) (0x48000000UL))->MODE[2]) |= (((0x8UL))));
+
+
+ ((((RCC_TypeDef *) (0x40021000UL))->AHB2ENR) |= ((0x1UL << 2UL)));
+
+ ((((GPIO_TypeDef *) (0x48000800UL))->MODE[0]) &= ~((0x3UL << 26UL)));
+}
+void PWM_Init(void)
+{
+
+ ((((RCC_TypeDef *) (0x40021000UL))->APB1ENR1) |= ((0x1UL)));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->PSC) |= ((0xA9UL)));
+
+ (((((TIM_TypeDef *) (0x40000000UL))->ARR)) = ((((((((TIM_TypeDef *) (0x40000000UL))->ARR))) & (~((0xFFFFFFFFUL)))) | ((0x63UL)))));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->CR1) |= ((0x1UL << 7)));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->CCMR1) |= (((0x6868UL))));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->CCER) |= ((0x11UL)));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->CR1) |= ((0x1UL)));
+
+ ((((TIM_TypeDef *) (0x40000000UL))->EGR) |= ((0x1UL)));
+}
+void NVIC_Init(void)
+{
+ ((((NVIC_Type *) (0xE000E100UL))->ISER[1]) |= ((0x1UL << 8UL)));
+
+ ((((RCC_TypeDef *) (0x40021000UL))->APB2ENR) |= ((0x1UL)));
+
+ ((((SYSCFG_TypeDef *) (0x40010000UL))->EXTICR[3]) |= ((0x2UL << 4UL)));
+
+ ((((EXTI_TypeDef *) (0x40010400UL))->RTSR1) |= ((0x1UL << 13UL)));
+
+ ((((EXTI_TypeDef *) (0x40010400UL))->IMR1) |= ((0x1UL << 13UL)));
+
+}

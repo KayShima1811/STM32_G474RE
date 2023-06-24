@@ -1,10 +1,10 @@
-# 1 "main.c"
+# 1 "Handler_EXTI_G4.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 387 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "main.c" 2
+# 1 "Handler_EXTI_G4.c" 2
 # 1 "./Define_G4.h" 1
 
 
@@ -259,49 +259,17 @@ typedef struct
   v_uint32_t SWIER2;
   v_uint32_t PR2;
 } EXTI_TypeDef;
-# 2 "main.c" 2
+# 2 "Handler_EXTI_G4.c" 2
 
-
-
-
- v_uint32_t user_sw_pressed = 0;
- static v_int32_t count = 0;
- static v_int32_t increment = 0;
- static v_uint32_t flag_cycle = 0;
-
-int main(void)
+void EXTI15_10_IRQHandler(void)
 {
- System_Init_170Mhz();
- GPIO_Init();
- PWM_Init();
- NVIC_Init();
- for(;;)
+ if(((((EXTI_TypeDef *) (0x40010400UL))->PR1) & ((0x1UL << 13UL))) != 0)
  {
+  user_sw_pressed = !user_sw_pressed;
   if(user_sw_pressed == 1)
   {
-   count = 0;
-   increment = 0;
+   ((TIM_TypeDef *) (0x40000000UL))->CCR1 = 0;
   }
-  if(user_sw_pressed == 0)
-  {
-   if(count >= 0)
-   {
-    if(count == 100){
-     increment = -1;
-     flag_cycle = 1;
-    }
-    else if(count == 0){
-     increment = 1;
-    }
-    count += increment;
-   }
-   ((TIM_TypeDef *) (0x40000000UL))->CCR1 = (v_uint32_t)count;
-   Delay(20);
-   if(flag_cycle == 1)
-   {
-    Delay(5000);
-    flag_cycle = 0;
-   }
-   }
-  }
+  ((((EXTI_TypeDef *) (0x40010400UL))->PR1) |= ((0x1UL << 13UL)));
  }
+}

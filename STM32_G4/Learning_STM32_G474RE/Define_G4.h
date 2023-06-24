@@ -1,13 +1,21 @@
 /**
- * ! Function Declaration 
+ * ! Init Function Declaration 
 */
 void System_Init_170Mhz(void);
 void GPIO_Init(void);
+void PWM_Init(void);
+void NVIC_Init(void);
+/*----------------------------------------------------------*/
+/**
+ * ! ISR Function Declaration  
+*/
+void EXTI15_10_IRQHandler(void);
+/*----------------------------------------------------------*/
+/**
+ * ! Declaration a Function
+*/
 void Delay(int time_ms);
 void Led_Output(int mode,int led);
-void PWM_Init(void);
-void EXTI15_10_IRQHandler(void);
-void NVIC_Init(void);
 /*----------------------------------------------------------*/
 /**
  * ! Definition Macro other 
@@ -42,7 +50,6 @@ void NVIC_Init(void);
 #define GPIOC_EN                    (0x1UL << 2UL)
 #define GPIOC_PIN_13                (0x3UL << 10UL)
 #define GPIOC_PIN_13_INPUT          (0x3UL << 26UL)    
-
 //TODO Name Macro TIM2
 #define RCC_TIM2_EN                 (0x1UL)
 #define PSC_DIV_170                 (0xA9UL)
@@ -371,7 +378,8 @@ typedef struct
   v_uint32_t DCR;         
   v_uint32_t DMAR;        
 } TIM_TypeDef;
-//?
+//?----------------------------------------------------------
+//TODO: NVIC Offset
 typedef struct
 {
   v_uint32_t ISER[8U];   
@@ -388,7 +396,8 @@ typedef struct
         uint32_t RESERVED5[644U];
   v_uint32_t STIR;               
 }  NVIC_Type;
-
+//?----------------------------------------------------------
+//TODO:  SYSCFG Offset
 typedef struct
 {
   v_uint32_t MEMRMP;      
@@ -399,7 +408,8 @@ typedef struct
   v_uint32_t SWPR;        
   v_uint32_t SKR;         
 } SYSCFG_TypeDef;
-
+//?----------------------------------------------------------
+//TODO:  EXTI Offset
 typedef struct
 {
   v_uint32_t IMR1;        

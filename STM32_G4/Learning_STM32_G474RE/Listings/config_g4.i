@@ -11,12 +11,20 @@
 
 void System_Init_170Mhz(void);
 void GPIO_Init(void);
+void PWM_Init(void);
+void NVIC_Init(void);
+
+
+
+
+void EXTI15_10_IRQHandler(void);
+
+
+
+
 void Delay(int time_ms);
 void Led_Output(int mode,int led);
-void PWM_Init(void);
-void EXTI15_10_IRQHandler(void);
-void NVIC_Init(void);
-# 189 "./Define_G4.h"
+# 196 "./Define_G4.h"
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
 typedef volatile unsigned short v_uint16_t;
@@ -203,6 +211,7 @@ typedef struct
   v_uint32_t DMAR;
 } TIM_TypeDef;
 
+
 typedef struct
 {
   v_uint32_t ISER[8U];
@@ -220,6 +229,7 @@ typedef struct
   v_uint32_t STIR;
 } NVIC_Type;
 
+
 typedef struct
 {
   v_uint32_t MEMRMP;
@@ -230,6 +240,7 @@ typedef struct
   v_uint32_t SWPR;
   v_uint32_t SKR;
 } SYSCFG_TypeDef;
+
 
 typedef struct
 {
@@ -327,59 +338,4 @@ void NVIC_Init(void)
 
  ((((EXTI_TypeDef *) (0x40010400UL))->IMR1) |= ((0x1UL << 13UL)));
 
-}
-void Delay(int time_ms)
-{
-
-
-
-
-
-
-
- int delay_count = (170 * time_ms) / 1000;
-
- ((SysTick_Type *) (0xE000E010UL) )->LOAD |= 0xF423FUL;
-
- ((SysTick_Type *) (0xE000E010UL) )->VAL = 0x0UL;
-
- ((SysTick_Type *) (0xE000E010UL) )->CTRL |= 0x5UL;
-
-   for (int i = 0; i < delay_count; i++)
- {
-  while (!(((SysTick_Type *) (0xE000E010UL) )->CTRL & (1 << 16)));
-   }
-
-   ((SysTick_Type *) (0xE000E010UL) )->CTRL = 0x0UL;
-}
-
-void Led_Output(int mode,int led)
-{
- switch (mode)
- {
- case 0:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] |= (1<<led);
-  break;
-
- case 1:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] &= ~(1u << led);
-  break;
-
- case 2:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] ^= (1u << led);
-  break;
- }
-}
-
-void EXTI15_10_IRQHandler(void)
-{
- if(((((EXTI_TypeDef *) (0x40010400UL))->PR1) & ((0x1UL << 13UL))) != 0)
- {
-  user_sw_pressed = !user_sw_pressed;
-  if(user_sw_pressed == 1)
-  {
-   ((TIM_TypeDef *) (0x40000000UL))->CCR1 = 0;
-  }
-  ((((EXTI_TypeDef *) (0x40010400UL))->PR1) |= ((0x1UL << 13UL)));
- }
 }

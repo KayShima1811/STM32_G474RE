@@ -405,14 +405,24 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>Config_G4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Config_G4.c</FilePath>
-            </File>
-            <File>
               <FileName>Define_G4.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Define_G4.h</FilePath>
+            </File>
+            <File>
+              <FileName>Init_Config_G4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Init_Config_G4.c</FilePath>
+            </File>
+            <File>
+              <FileName>Function.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Function.c</FilePath>
+            </File>
+            <File>
+              <FileName>Handler_EXTI_G4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Handler_EXTI_G4.c</FilePath>
             </File>
           </Files>
         </Group>
