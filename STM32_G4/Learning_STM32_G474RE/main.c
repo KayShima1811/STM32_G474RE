@@ -3,10 +3,12 @@
 /**
  * ! Variable definition 
 */
+	//TODO: Global Variable
 	v_uint32_t user_sw_pressed = false;
-	static v_int32_t count = 0;
-	static v_int32_t increment = 0;
-	static v_uint32_t	flag_cycle = false;
+	v_int32_t count = 0;
+	v_int32_t increment = 0;
+	//TODO: Static Variable
+//	static v_uint32_t	flag_cycle = false;
 /*----------------------------------------------------------*/
 int main(void)
 {
@@ -16,18 +18,13 @@ int main(void)
 	NVIC_Init();
 	for(;;)
 	{
-		if(user_sw_pressed == true)
-		{
-			count = 0;
-			increment = 0;
-		}
 		if(user_sw_pressed == false)
 		{
 			if(count >= 0)
 			{
 				if(count == 100){
 					increment = -1;
-					flag_cycle = true;
+					//Delay(5000);
 				}
 				else if(count == 0){
 					increment = 1;
@@ -35,12 +32,7 @@ int main(void)
 				count += increment;
 			}
 			TIM2->CCR1 = (v_uint32_t)count;
-			Delay(20);
-			if(flag_cycle == true)
-			{
-				Delay(5000);
-				flag_cycle = false;
-			}
-			}
+			Delay(15);
 		}
 	}
+}

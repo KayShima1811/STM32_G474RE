@@ -18,7 +18,40 @@ void Delay(int time_ms);
 void Led_Output(int mode,int led);
 /*----------------------------------------------------------*/
 /**
- * ! Definition Macro other 
+ * ! Type Definition 
+*/
+//TODO: Data Type 
+typedef volatile unsigned int                          v_uint32_t;
+typedef 		     unsigned int                            uint32_t;
+typedef volatile unsigned short                        v_uint16_t;
+typedef 		     unsigned short                          uint16_t;
+typedef volatile unsigned char                         v_uint8_t;
+typedef 		     unsigned char                           uint8_t;
+
+typedef volatile 				  int                          v_int32_t;
+typedef 		    				  int                            int32_t;
+typedef volatile 				  short                        v_int16_t;
+typedef 		      				short                          int16_t;
+typedef volatile 				  char                         v_int8_t;
+typedef 		     					char                           int8_t;
+
+enum Status_LED 
+{
+	output_off = 0,
+	output_on = 1,
+	toggle = 2
+};
+/*----------------------------------------------------------*/
+/**
+ * ! Global Variable Extern 
+*/
+	extern v_uint32_t user_sw_pressed;
+	extern v_int32_t count;
+	extern v_int32_t increment;
+/*----------------------------------------------------------*/
+/** @addtogroup 
+  * ! Definition Macro other
+  * @{
 */
 //TODO Name Macro Clock
 #define RANGE_1_NORMAL_MODE         (0x1UL << 8UL)
@@ -89,6 +122,9 @@ void Led_Output(int mode,int led);
 #define WRITE_REG(REG, VAL)   ((REG) = (VAL))
 #define READ_REG(REG)         ((REG))
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
+/**
+  * @}
+  */
 /*----------------------------------------------------------*/
 /** @addtogroup 
   * !Peripheral Memory Map
@@ -125,8 +161,6 @@ void Led_Output(int mode,int led);
 #define NVIC_BASE             (0xE000E100UL)
 #define EXTI_BASE             (0x40010400UL)
 #define SYSCFG_BASE           (0x40010000UL)
-
-
 
 /**
   * @}
@@ -175,8 +209,11 @@ void Led_Output(int mode,int led);
   * @}
   */
 /*----------------------------------------------------------*/
-//TODO GPIO 
-/* GPIO Index Offsets */
+/** @addtogroup 
+  * !Peripheral Registers Structures
+  * @{
+  */   
+//TODO GPIO Index Offsets
 #define MODER      0
 #define OTYPER     1
 #define OSPEEDR    2
@@ -188,36 +225,6 @@ void Led_Output(int mode,int led);
 #define AFR_L      8
 #define AFR_H      9
 #define BRR        10
-/*----------------------------------------------------------*/
-/**
- * ! Type Definition 
-*/
-//TODO: Data Type 
-typedef volatile unsigned int                          v_uint32_t;
-typedef 		     unsigned int                            uint32_t;
-typedef volatile unsigned short                        v_uint16_t;
-typedef 		     unsigned short                          uint16_t;
-typedef volatile unsigned char                         v_uint8_t;
-typedef 		     unsigned char                           uint8_t;
-
-typedef volatile 				  int                          v_int32_t;
-typedef 		    				  int                            int32_t;
-typedef volatile 				  short                        v_int16_t;
-typedef 		      				short                          int16_t;
-typedef volatile 				  char                         v_int8_t;
-typedef 		     					char                           int8_t;
-
-enum Status_LED 
-{
-	output_off = 0,
-	output_on = 1,
-	toggle = 2
-};
-/*----------------------------------------------------------*/
-/**
- * ! Variable definition 
-*/
-	extern v_uint32_t user_sw_pressed;
 //?----------------------------------------------------------
 //TODO RCC Offset Register
 typedef struct
@@ -427,4 +434,7 @@ typedef struct
   v_uint32_t SWIER2;      
   v_uint32_t PR2;         
 } EXTI_TypeDef;
+/**
+  * @}
+  */
 /*----------------------------------------------------------*/

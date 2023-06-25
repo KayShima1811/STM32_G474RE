@@ -24,7 +24,11 @@ void EXTI15_10_IRQHandler(void);
 
 void Delay(int time_ms);
 void Led_Output(int mode,int led);
-# 196 "./Define_G4.h"
+
+
+
+
+
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
 typedef volatile unsigned short v_uint16_t;
@@ -50,8 +54,9 @@ enum Status_LED
 
 
  extern v_uint32_t user_sw_pressed;
-
-
+ extern v_int32_t count;
+ extern v_int32_t increment;
+# 230 "./Define_G4.h"
 typedef struct
 {
   v_uint32_t CR;
@@ -260,7 +265,8 @@ typedef struct
   v_uint32_t PR2;
 } EXTI_TypeDef;
 # 2 "Handler_EXTI_G4.c" 2
-
+extern v_int32_t count;
+extern v_int32_t increment;
 void EXTI15_10_IRQHandler(void)
 {
  if(((((EXTI_TypeDef *) (0x40010400UL))->PR1) & ((0x1UL << 13UL))) != 0)
@@ -269,6 +275,8 @@ void EXTI15_10_IRQHandler(void)
   if(user_sw_pressed == 1)
   {
    ((TIM_TypeDef *) (0x40000000UL))->CCR1 = 0;
+   count = 0;
+   increment = 0;
   }
   ((((EXTI_TypeDef *) (0x40010400UL))->PR1) |= ((0x1UL << 13UL)));
  }

@@ -20,13 +20,6 @@ void Led_Output(int mode,int led)
 
 void Delay(int time_ms) 
 {
-	/**
-	@brief 	//!Configure SystemTick Timer
-	* Enable SystemTick
-	* Chose Clock Source is Processor Clock: 1
-	* Enable SystemTick Interrupt
-	* Set register reload value
-	*/
 	int delay_count = (170 * time_ms) / 1000;
 	
 	SYST->LOAD |= 0xF423FUL; 					//Set register reload value = 999.999

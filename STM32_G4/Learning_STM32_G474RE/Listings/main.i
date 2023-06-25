@@ -24,7 +24,11 @@ void EXTI15_10_IRQHandler(void);
 
 void Delay(int time_ms);
 void Led_Output(int mode,int led);
-# 196 "./Define_G4.h"
+
+
+
+
+
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
 typedef volatile unsigned short v_uint16_t;
@@ -50,8 +54,9 @@ enum Status_LED
 
 
  extern v_uint32_t user_sw_pressed;
-
-
+ extern v_int32_t count;
+ extern v_int32_t increment;
+# 230 "./Define_G4.h"
 typedef struct
 {
   v_uint32_t CR;
@@ -264,10 +269,12 @@ typedef struct
 
 
 
+
  v_uint32_t user_sw_pressed = 0;
- static v_int32_t count = 0;
- static v_int32_t increment = 0;
- static v_uint32_t flag_cycle = 0;
+ v_int32_t count = 0;
+ v_int32_t increment = 0;
+
+
 
 int main(void)
 {
@@ -277,18 +284,13 @@ int main(void)
  NVIC_Init();
  for(;;)
  {
-  if(user_sw_pressed == 1)
-  {
-   count = 0;
-   increment = 0;
-  }
   if(user_sw_pressed == 0)
   {
    if(count >= 0)
    {
     if(count == 100){
      increment = -1;
-     flag_cycle = 1;
+
     }
     else if(count == 0){
      increment = 1;
@@ -296,12 +298,7 @@ int main(void)
     count += increment;
    }
    ((TIM_TypeDef *) (0x40000000UL))->CCR1 = (v_uint32_t)count;
-   Delay(20);
-   if(flag_cycle == 1)
-   {
-    Delay(5000);
-    flag_cycle = 0;
-   }
-   }
+   Delay(15);
   }
  }
+}

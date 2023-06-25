@@ -24,7 +24,11 @@ void EXTI15_10_IRQHandler(void);
 
 void Delay(int time_ms);
 void Led_Output(int mode,int led);
-# 196 "./Define_G4.h"
+
+
+
+
+
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
 typedef volatile unsigned short v_uint16_t;
@@ -50,8 +54,9 @@ enum Status_LED
 
 
  extern v_uint32_t user_sw_pressed;
-
-
+ extern v_int32_t count;
+ extern v_int32_t increment;
+# 230 "./Define_G4.h"
 typedef struct
 {
   v_uint32_t CR;
@@ -281,13 +286,6 @@ void Led_Output(int mode,int led)
 
 void Delay(int time_ms)
 {
-
-
-
-
-
-
-
  int delay_count = (170 * time_ms) / 1000;
 
  ((SysTick_Type *) (0xE000E010UL) )->LOAD |= 0xF423FUL;
