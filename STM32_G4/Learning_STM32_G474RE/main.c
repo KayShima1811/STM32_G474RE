@@ -7,8 +7,7 @@
 	v_uint32_t user_sw_pressed = false;
 	v_int32_t count = 0;
 	v_int32_t increment = 0;
-	//TODO: Static Variable
-//	static v_uint32_t	flag_cycle = false;
+	//TODO: Local Variable
 /*----------------------------------------------------------*/
 int main(void)
 {

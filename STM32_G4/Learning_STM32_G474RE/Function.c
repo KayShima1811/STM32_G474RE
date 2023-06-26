@@ -1,23 +1,44 @@
 #include "Define_G4.h"
 
-void Signal_Pin_Output(int mode,int port,int value)
+void Signal_Pin_Output(int Mode,int Port,int Pin, int Value)
 {
-	switch (port)
+	GPIO_TypeDef* GPIOx;
+	switch (Port)
 	{
-	case 1:
-		
+	case GPIO_PORT_A:
+		GPIOx = GPIOA;
 		break;
-	case 2:
+	case GPIO_PORT_B:
+		GPIOx = GPIOB;
 		break;
-	case 3:
+	case GPIO_PORT_C:
+		GPIOx = GPIOC;
 		break;
-	case 4:
+	case GPIO_PORT_D:
+		GPIOx = GPIOD;
 		break;
-	case 5:
+	case GPIO_PORT_E:
+		GPIOx = GPIOE;
 		break;
-	case 6:
+	case GPIO_PORT_F:
+		GPIOx = GPIOF;
 		break;
-	case 7:
+	case GPIO_PORT_G:
+		GPIOx = GPIOG;
+		break;
+	default:
+		break;
+	}
+	switch (Mode)
+	{
+	case MODE_WRITE:
+		MODIFY_REG(GPIOx->MODE[ODR],1 << Pin,Value);
+		break;
+	case MODE_READ:
+		READ_BIT(GPIOx->MODE[ODR],1 << Pin);
+		break;
+	case MODE_TOGGLE:
+		TOGGLE_BIT(GPIOx->MODE[ODR],1 << Pin);
 		break;
 	default:
 		break;

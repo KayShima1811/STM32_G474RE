@@ -34,13 +34,6 @@ typedef volatile 				  short                        v_int16_t;
 typedef 		      				short                          int16_t;
 typedef volatile 				  char                         v_int8_t;
 typedef 		     					char                           int8_t;
-
-enum Status_LED 
-{
-	output_off = 0,
-	output_on = 1,
-	toggle = 2
-};
 /*----------------------------------------------------------*/
 /**
  * ! Global Variable Extern 
@@ -118,18 +111,23 @@ enum Status_LED
 #define SET_BIT(REG, BIT)     ((REG) |= (BIT))
 #define CLEAR_BIT(REG, BIT)   ((REG) &= ~(BIT))
 #define READ_BIT(REG, BIT)    ((REG) & (BIT))
+#define TOGGLE_BIT(REG, BIT)  ((REG) ^= (BIT))
 #define CLEAR_REG(REG)        ((REG) = (0x0))
 #define WRITE_REG(REG, VAL)   ((REG) = (VAL))
 #define READ_REG(REG)         ((REG))
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 //TODO Macro other
-#define GPIOA                 1
-#define GPIOB                 2
-#define GPIOC                 3
-#define GPIOD                 4
-#define GPIOE                 5
-#define GPIOF                 6
-#define GPIOG                 7
+#define GPIO_PORT_A                 1
+#define GPIO_PORT_B                 2
+#define GPIO_PORT_C                 3
+#define GPIO_PORT_D                 4
+#define GPIO_PORT_E                 5
+#define GPIO_PORT_F                 6
+#define GPIO_PORT_G                 7
+
+#define MODE_WRITE                  1
+#define MODE_READ                   2
+#define MODE_TOGGLE                 3
 /**
   * @}
   */
