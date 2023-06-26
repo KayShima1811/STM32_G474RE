@@ -122,6 +122,14 @@ enum Status_LED
 #define WRITE_REG(REG, VAL)   ((REG) = (VAL))
 #define READ_REG(REG)         ((REG))
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
+//TODO Macro other
+#define GPIOA                 1
+#define GPIOB                 2
+#define GPIOC                 3
+#define GPIOD                 4
+#define GPIOE                 5
+#define GPIOF                 6
+#define GPIOG                 7
 /**
   * @}
   */

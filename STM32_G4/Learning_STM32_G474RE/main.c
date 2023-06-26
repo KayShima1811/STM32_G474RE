@@ -20,17 +20,13 @@ int main(void)
 	{
 		if(user_sw_pressed == false)
 		{
-			if(count >= 0)
-			{
-				if(count == 100){
-					increment = -1;
-					//Delay(5000);
-				}
-				else if(count == 0){
-					increment = 1;
-				}
-				count += increment;
+			if(count == 100){
+				increment = -1;
 			}
+			else if(count == 0){
+				increment = 1;
+			}
+			count += increment;
 			TIM2->CCR1 = (v_uint32_t)count;
 			Delay(15);
 		}

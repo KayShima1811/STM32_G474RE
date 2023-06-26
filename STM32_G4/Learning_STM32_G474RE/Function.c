@@ -1,19 +1,25 @@
 #include "Define_G4.h"
 
-void Led_Output(int mode,int led)
+void Signal_Pin_Output(int mode,int port,int value)
 {
-	switch (mode)
+	switch (port)
 	{
-	case 0://OFF LED OUT
-		GPIOA->MODE[ODR] |= (1<<led);
+	case 1:
+		
 		break;
-	
-	case 1://ON LED OUT
-		GPIOA->MODE[ODR] &= ~(1u << led);
+	case 2:
 		break;
-
-	case 2://TOGGLE LED OUT
-		GPIOA->MODE[ODR] ^= (1u << led);
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	default:
 		break;
 	}
 }

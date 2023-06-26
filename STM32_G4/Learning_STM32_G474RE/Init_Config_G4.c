@@ -60,7 +60,7 @@ void PWM_Init(void)
 	SET_BIT(TIM2->CCMR1,(TIM2_CH1_2_PWM_MODE));
 	/* Enable PWM CH1 */
 	SET_BIT(TIM2->CCER,TIM2_CH1_2_EN);
-	/* Enable Timer2*/
+	/* Enable Timer2 */
 	SET_BIT(TIM2->CR1,TIM2_EN);
 	/* Enable UIF */
 	SET_BIT(TIM2->EGR,TIM2_UIF_EN);

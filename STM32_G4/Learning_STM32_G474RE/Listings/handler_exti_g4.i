@@ -265,8 +265,7 @@ typedef struct
   v_uint32_t PR2;
 } EXTI_TypeDef;
 # 2 "Handler_EXTI_G4.c" 2
-extern v_int32_t count;
-extern v_int32_t increment;
+
 void EXTI15_10_IRQHandler(void)
 {
  if(((((EXTI_TypeDef *) (0x40010400UL))->PR1) & ((0x1UL << 13UL))) != 0)

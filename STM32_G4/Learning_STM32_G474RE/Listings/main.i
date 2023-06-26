@@ -286,17 +286,13 @@ int main(void)
  {
   if(user_sw_pressed == 0)
   {
-   if(count >= 0)
-   {
-    if(count == 100){
-     increment = -1;
-
-    }
-    else if(count == 0){
-     increment = 1;
-    }
-    count += increment;
+   if(count == 100){
+    increment = -1;
    }
+   else if(count == 0){
+    increment = 1;
+   }
+   count += increment;
    ((TIM_TypeDef *) (0x40000000UL))->CCR1 = (v_uint32_t)count;
    Delay(15);
   }
