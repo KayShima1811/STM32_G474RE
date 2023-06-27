@@ -9,25 +9,6 @@
 
 
 
-void System_Init_170Mhz(void);
-void GPIO_Init(void);
-void PWM_Init(void);
-void NVIC_Init(void);
-
-
-
-
-void EXTI15_10_IRQHandler(void);
-
-
-
-
-void Delay(int time_ms);
-void Led_Output(int mode,int led);
-
-
-
-
 
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
@@ -43,12 +24,25 @@ typedef short int16_t;
 typedef volatile char v_int8_t;
 typedef char int8_t;
 
-enum Status_LED
-{
- output_off = 0,
- output_on = 1,
- toggle = 2
-};
+
+
+
+void System_Init_170Mhz(void);
+void GPIO_Init(void);
+void PWM_Init(void);
+void NVIC_Init(void);
+
+
+
+
+void EXTI15_10_IRQHandler(void);
+
+
+
+
+void Delay(int time_ms);
+void Led_Output(int mode,int led);
+void Signal_Pin_Output(int Mode,int Port,int Pin, uint32_t Value);
 
 
 
@@ -56,7 +50,7 @@ enum Status_LED
  extern v_uint32_t user_sw_pressed;
  extern v_int32_t count;
  extern v_int32_t increment;
-# 230 "./Define_G4.h"
+# 241 "./Define_G4.h"
 typedef struct
 {
   v_uint32_t CR;
@@ -266,20 +260,54 @@ typedef struct
 } EXTI_TypeDef;
 # 2 "Function.c" 2
 
-void Led_Output(int mode,int led)
+void Signal_Pin_Output(int Mode,int Port,int Pin, uint32_t Value)
 {
- switch (mode)
+ GPIO_TypeDef* GPIOx = 0;
+ switch (Port)
  {
- case 0:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] |= (1<<led);
-  break;
-
  case 1:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] &= ~(1u << led);
+  GPIOx = ((GPIO_TypeDef *) (0x48000000UL));
   break;
-
  case 2:
-  ((GPIO_TypeDef *) (0x48000000UL))->MODE[5] ^= (1u << led);
+  GPIOx = ((GPIO_TypeDef *) (0x48000400UL));
+  break;
+ case 3:
+  GPIOx = ((GPIO_TypeDef *) (0x48000800UL));
+  break;
+ case 4:
+  GPIOx = ((GPIO_TypeDef *) (0x48000C00UL));
+  break;
+ case 5:
+  GPIOx = ((GPIO_TypeDef *) (0x48001000UL));
+  break;
+ case 6:
+  GPIOx = ((GPIO_TypeDef *) (0x48001400UL));
+  break;
+ case 7:
+  GPIOx = ((GPIO_TypeDef *) (0x48001800UL));
+  break;
+ default:
+  break;
+ }
+ switch (Mode)
+ {
+ case 1:
+  if(Value)
+  {
+   ((GPIOx->MODE[5]) |= (1UL << Pin));
+  }
+  else
+  {
+   ((GPIOx->MODE[5]) &= ~(1UL << Pin));
+  }
+  break;
+ case 2:
+  ((GPIOx->MODE[5]) & (1 << Pin));
+  break;
+ case 3:
+  ((GPIOx->MODE[5]) ^= (1 << Pin));
+  break;
+ default:
   break;
  }
 }

@@ -9,25 +9,6 @@
 
 
 
-void System_Init_170Mhz(void);
-void GPIO_Init(void);
-void PWM_Init(void);
-void NVIC_Init(void);
-
-
-
-
-void EXTI15_10_IRQHandler(void);
-
-
-
-
-void Delay(int time_ms);
-void Led_Output(int mode,int led);
-
-
-
-
 
 typedef volatile unsigned int v_uint32_t;
 typedef unsigned int uint32_t;
@@ -43,12 +24,25 @@ typedef short int16_t;
 typedef volatile char v_int8_t;
 typedef char int8_t;
 
-enum Status_LED
-{
- output_off = 0,
- output_on = 1,
- toggle = 2
-};
+
+
+
+void System_Init_170Mhz(void);
+void GPIO_Init(void);
+void PWM_Init(void);
+void NVIC_Init(void);
+
+
+
+
+void EXTI15_10_IRQHandler(void);
+
+
+
+
+void Delay(int time_ms);
+void Led_Output(int mode,int led);
+void Signal_Pin_Output(int Mode,int Port,int Pin, uint32_t Value);
 
 
 
@@ -56,7 +50,7 @@ enum Status_LED
  extern v_uint32_t user_sw_pressed;
  extern v_int32_t count;
  extern v_int32_t increment;
-# 230 "./Define_G4.h"
+# 241 "./Define_G4.h"
 typedef struct
 {
   v_uint32_t CR;
@@ -298,8 +292,12 @@ void GPIO_Init(void)
     ((((RCC_TypeDef *) (0x40021000UL))->AHB2ENR) |= ((0x1UL)));
 
 
- (((((GPIO_TypeDef *) (0x48000000UL))->MODE[0])) = ((((((((GPIO_TypeDef *) (0x48000000UL))->MODE[0]))) & (~((0x3UL << 10UL)))) | ((0x2UL << 10UL)))));
- ((((GPIO_TypeDef *) (0x48000000UL))->MODE[8]) |= (((0x1UL << 20UL))));
+
+
+
+
+
+ (((((GPIO_TypeDef *) (0x48000000UL))->MODE[0])) = ((((((((GPIO_TypeDef *) (0x48000000UL))->MODE[0]))) & (~((0x3UL << 10UL)))) | ((0x1UL << 10UL)))));
  ((((GPIO_TypeDef *) (0x48000000UL))->MODE[2]) |= (((0x2UL << 10UL))));
 
 

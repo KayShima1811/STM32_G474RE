@@ -1,8 +1,8 @@
 #include "Define_G4.h"
 
-void Signal_Pin_Output(int Mode,int Port,int Pin, int Value)
+void Signal_Pin_Output(int Mode,int Port,int Pin, uint32_t Value)
 {
-	GPIO_TypeDef* GPIOx;
+	GPIO_TypeDef* GPIOx = 0;
 	switch (Port)
 	{
 	case GPIO_PORT_A:
@@ -32,7 +32,14 @@ void Signal_Pin_Output(int Mode,int Port,int Pin, int Value)
 	switch (Mode)
 	{
 	case MODE_WRITE:
-		MODIFY_REG(GPIOx->MODE[ODR],1 << Pin,Value);
+		if(Value)
+		{
+			SET_BIT(GPIOx->MODE[ODR],1UL << Pin);
+		}
+		else
+		{
+			CLEAR_BIT(GPIOx->MODE[ODR], 1UL << Pin);
+		}
 		break;
 	case MODE_READ:
 		READ_BIT(GPIOx->MODE[ODR],1 << Pin);
@@ -62,3 +69,5 @@ void Delay(int time_ms)
 
   	SYST->CTRL = 0x0UL;
 }
+
+

@@ -1,23 +1,4 @@
 /**
- * ! Init Function Declaration 
-*/
-void System_Init_170Mhz(void);
-void GPIO_Init(void);
-void PWM_Init(void);
-void NVIC_Init(void);
-/*----------------------------------------------------------*/
-/**
- * ! ISR Function Declaration  
-*/
-void EXTI15_10_IRQHandler(void);
-/*----------------------------------------------------------*/
-/**
- * ! Declaration a Function
-*/
-void Delay(int time_ms);
-void Led_Output(int mode,int led);
-/*----------------------------------------------------------*/
-/**
  * ! Type Definition 
 */
 //TODO: Data Type 
@@ -36,6 +17,26 @@ typedef volatile 				  char                         v_int8_t;
 typedef 		     					char                           int8_t;
 /*----------------------------------------------------------*/
 /**
+ * ! Init Function Declaration 
+*/
+void System_Init_170Mhz(void);
+void GPIO_Init(void);
+void PWM_Init(void);
+void NVIC_Init(void);
+/*----------------------------------------------------------*/
+/**
+ * ! ISR Function Declaration  
+*/
+void EXTI15_10_IRQHandler(void);
+/*----------------------------------------------------------*/
+/**
+ * ! Declaration a Function
+*/
+void Delay(int time_ms);
+void Led_Output(int mode,int led);
+void Signal_Pin_Output(int Mode,int Port,int Pin, uint32_t Value);
+/*----------------------------------------------------------*/
+/**
  * ! Global Variable Extern 
 */
 	extern v_uint32_t user_sw_pressed;
@@ -46,6 +47,8 @@ typedef 		     					char                           int8_t;
   * ! Definition Macro other
   * @{
 */
+//TODO: Optional Arguments In Macros
+
 //TODO Name Macro Clock
 #define RANGE_1_NORMAL_MODE         (0x1UL << 8UL)
 #define PWR_VOS_SHIFT               (0x3UL << 9UL) 
@@ -71,11 +74,23 @@ typedef 		     					char                           int8_t;
 #define GPIOA_PIN_1_HS_OUTPUT       (0x8UL)
 #define GPIOA_PIN_5                 (0x3UL << 10UL)
 #define GPIOA_PIN_5_AF_MODE         (0x2UL << 10UL)
+#define GPIOA_PIN_5_OUTPUT          (0x1UL << 10UL)
 #define GPIOA_PIN_5_AF1             (0x1UL << 20UL)
 #define GPIOA_PIN_5_HS_OUTPUT       (0x2UL << 10UL)
 #define GPIOC_EN                    (0x1UL << 2UL)
 #define GPIOC_PIN_13                (0x3UL << 10UL)
-#define GPIOC_PIN_13_INPUT          (0x3UL << 26UL)    
+#define GPIOC_PIN_13_INPUT          (0x3UL << 26UL)   
+#define GPIO_PORT_A                 1
+#define GPIO_PORT_B                 2
+#define GPIO_PORT_C                 3
+#define GPIO_PORT_D                 4
+#define GPIO_PORT_E                 5
+#define GPIO_PORT_F                 6
+#define GPIO_PORT_G                 7
+#define GPIO_PIN(x)                 (x)
+#define MODE_WRITE                  1
+#define MODE_READ                   2
+#define MODE_TOGGLE                 3 
 //TODO Name Macro TIM2
 #define RCC_TIM2_EN                 (0x1UL)
 #define PSC_DIV_170                 (0xA9UL)
@@ -90,6 +105,8 @@ typedef 		     					char                           int8_t;
 #define NONE        NULL
 #define true        1
 #define false       0
+#define HIGH 	1
+#define LOW		0
 //TODO Value PLL
 #define PLLSRC_HSE   3
 #define PLL_M        6
@@ -117,17 +134,7 @@ typedef 		     					char                           int8_t;
 #define READ_REG(REG)         ((REG))
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 //TODO Macro other
-#define GPIO_PORT_A                 1
-#define GPIO_PORT_B                 2
-#define GPIO_PORT_C                 3
-#define GPIO_PORT_D                 4
-#define GPIO_PORT_E                 5
-#define GPIO_PORT_F                 6
-#define GPIO_PORT_G                 7
 
-#define MODE_WRITE                  1
-#define MODE_READ                   2
-#define MODE_TOGGLE                 3
 /**
   * @}
   */
